@@ -13,7 +13,7 @@ An unofficial, deadpan chatbot for the Knox Academic Portfolio. Text or voice, o
 1. **Get a free Gemini API key** from Google AI Studio (aistudio.google.com). Keep it private.
 2. **Create a GitHub repository** and push this folder to it.
 3. **Deploy on Netlify**: New site, then Import from Git, and choose the repository. Netlify reads `netlify.toml`, so the publish folder and functions are already set.
-4. **Add the key**: Site settings, then Environment variables, then add `GEMINI_API_KEY`. Optionally add `GEMINI_MODEL`. Redeploy.
+4. **Add the key**: Site settings, then Environment variables, then add `GEMINI_API_KEY` (or `gemini_agitur`). Optionally add `GEMINI_MODEL`. Redeploy.
 5. **Test** with the link Netlify gives you. Try ordinary questions, off-topic questions, and an attempt to get it to ignore its rules.
 
 To test locally, copy `.env.example` to `.env`, add your key, and run `npx netlify dev` after installing the Netlify CLI.

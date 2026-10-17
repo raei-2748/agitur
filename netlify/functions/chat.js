@@ -66,7 +66,8 @@ exports.handler = async (event) => {
   }
   contents.push({ role: "user", parts: [{ text: message }] });
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  // Accepts either variable name set in Netlify.
+  const apiKey = process.env.GEMINI_API_KEY || process.env.gemini_agitur;
   if (!apiKey) {
     return json(500, { reply: "The site owner forgot the API key. Classic." });
   }
