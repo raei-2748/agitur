@@ -3,30 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Agitur</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-state="idle">
   <main>
     <header>
-      <h1>Agitur</h1>
-      <p>Academic Portfolio</p>
+      <div class="orb" aria-hidden="true"></div>
+      <div class="title">
+        <h1>Agitur</h1>
+        <p>Academic Portfolio</p>
+      </div>
+      <label class="switch" title="Read replies aloud">
+        <input type="checkbox" id="speak" aria-label="Read replies aloud">
+        <span class="track"><span class="thumb"></span></span>
+        <span class="switch-label">Voice</span>
+      </label>
     </header>
 
-    <div id="log" aria-live="polite"></div>
+    <section id="log" aria-live="polite"></section>
+
+    <div class="status" id="status" aria-hidden="true"></div>
 
     <form id="form" autocomplete="off">
-      <button type="button" id="mic" aria-label="Speak your question">Talk</button>
-      <input id="input" type="text" placeholder="Ask something" maxlength="500" aria-label="Message">
-      <button type="submit">Send</button>
+      <button type="button" id="mic" class="icon-btn" aria-label="Speak your question" title="Speak">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/>
+        </svg>
+      </button>
+      <input id="input" type="text" placeholder="Ask about the Academic Portfolio" maxlength="500" aria-label="Message">
+      <button type="submit" class="icon-btn send" aria-label="Send" title="Send">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path fill="currentColor" d="M4 12l16-8-6 16-2.5-6.5L4 12Z"/>
+        </svg>
+      </button>
     </form>
 
-    <label class="toggle">
-      <input type="checkbox" id="speak"> Read replies aloud
-    </label>
-
     <footer>
-      Unofficial student project. Not endorsed by Knox Grammar School. Messages are processed by Google's Gemini API, so don't share personal details.
+      Unofficial student project, not endorsed by Knox Grammar School. Messages are processed by Google's Gemini API, so don't share personal details.
     </footer>
   </main>
   <script src="app.js"></script>
