@@ -9,7 +9,9 @@ const MAX_APPROVED = 80;
 
 function openStore(event) {
   connectLambda(event);
-  return getStore({ name: "letters", consistency: "strong" });
+  // Default (eventual) consistency: changes can take up to a minute to appear
+  // everywhere. Strong consistency isn't available to Lambda-style functions.
+  return getStore("letters");
 }
 
 function newId() {

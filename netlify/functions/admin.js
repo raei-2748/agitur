@@ -108,8 +108,9 @@ exports.handler = async (event) => {
       if (blobs.length >= MAX_APPROVED) {
         return json(400, { error: `Agitur already has ${MAX_APPROVED} notes. Remove some first.` });
       }
-      await store.setJSON(`approved/${newId()}`, { text, created: now, approved: now });
-      return json(200, { ok: true });
+      const id = newId();
+      await store.setJSON(`approved/${id}`, { text, created: now, approved: now });
+      return json(200, { ok: true, id });
     }
 
     return json(400, { error: "Unknown action." });

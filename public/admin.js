@@ -58,13 +58,30 @@ function card(item, waiting) {
   row.appendChild(meta);
 
   if (waiting) {
-    row.appendChild(button("Bin", "danger", () => act({ action: "reject", id: item.id }, "Letter binned.")));
-    row.appendChild(button("Approve", "solid", () => act({ action: "approve", id: item.id, text: ta.value }, "Approved. Agitur will know within a minute.")));
+    row.appendChild(button("Bin", "danger", () =>
+      act({ action: "reject", id: item.id }, "Letter binned.", () => {
+        state.pending = state.pending.filter((x) => x.id !== item.id);
+      })));
+    row.appendChild(button("Approve", "solid", () => {
+      const text = ta.value.trim();
+      act({ action: "approve", id: item.id, text }, "Approved. Agitur will know within a minute.", () => {
+        state.pending = state.pending.filter((x) => x.id !== item.id);
+        state.approved.push({ ...item, text, approved: Date.now() });
+      });
+    }));
   } else {
     row.appendChild(button("Remove", "danger", () => {
-      if (confirm("Remove this note from Agitur?")) act({ action: "remove", id: item.id }, "Note removed.");
+      if (!confirm("Remove this note from Agitur?")) return;
+      act({ action: "remove", id: item.id }, "Note removed.", () => {
+        state.approved = state.approved.filter((x) => x.id !== item.id);
+      });
     }));
-    row.appendChild(button("Save changes", "ghost", () => act({ action: "edit", id: item.id, text: ta.value }, "Changes saved.")));
+    row.appendChild(button("Save changes", "ghost", () => {
+      const text = ta.value.trim();
+      act({ action: "edit", id: item.id, text }, "Changes saved.", () => {
+        item.text = text;
+      });
+    }));
   }
   el.appendChild(row);
   return el;
@@ -83,11 +100,19 @@ function fill(listEl, countEl, items, waiting, emptyText) {
   for (const item of waiting ? items : [...items].reverse()) listEl.appendChild(card(item, waiting));
 }
 
+// Local copy of the lists. Storage can take up to a minute to reflect changes,
+// so after each action the page updates this copy rather than reloading.
+let state = { pending: [], approved: [] };
+
+function render() {
+  fill(document.getElementById("pending"), document.getElementById("pending-n"), state.pending, true, "No letters waiting. Enjoy the quiet.");
+  fill(document.getElementById("approved"), document.getElementById("approved-n"), state.approved, false, "Agitur hasn't been told anything yet. Approve a letter or add a note below.");
+}
+
 async function load() {
   try {
-    const data = await call("GET");
-    fill(document.getElementById("pending"), document.getElementById("pending-n"), data.pending, true, "No letters waiting. Enjoy the quiet.");
-    fill(document.getElementById("approved"), document.getElementById("approved-n"), data.approved, false, "Agitur hasn't been told anything yet. Approve a letter or add a note below.");
+    state = await call("GET");
+    render();
     loginForm.hidden = true;
     room.hidden = false;
     logoutBtn.hidden = false;
@@ -104,13 +129,16 @@ async function load() {
   }
 }
 
-async function act(body, done) {
+async function act(body, done, update) {
   try {
-    await call("POST", body);
+    const result = await call("POST", body);
+    if (update) update(result);
+    render();
     say(done, "good");
-    await load();
+    return true;
   } catch (err) {
     say(err.message, "bad");
+    return false;
   }
 }
 
@@ -131,7 +159,9 @@ document.getElementById("add").addEventListener("click", () => {
   const ta = document.getElementById("new-note");
   const text = ta.value.trim();
   if (!text) return say("Write the note first.", "bad");
-  act({ action: "add", text }, "Note added.").then(() => { ta.value = ""; });
+  act({ action: "add", text }, "Note added.", (result) => {
+    state.approved.push({ id: result.id, text, created: Date.now(), approved: Date.now() });
+  }).then((ok) => { if (ok) ta.value = ""; });
 });
 
 if (password) load();
