@@ -1,0 +1,112 @@
+:root {
+  --bg: #f2f2f2;
+  --ink: #222;
+  --muted: #777;
+  --line: #ccc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+main {
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+header p {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+#log {
+  flex: 1;
+  min-height: 50vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#log p {
+  margin: 0;
+  max-width: 85%;
+  padding: 8px 10px;
+  line-height: 1.4;
+  border-radius: 6px;
+}
+
+.you {
+  align-self: flex-end;
+  background: #dcdcdc;
+}
+
+.bot {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.pending {
+  color: var(--muted);
+}
+
+form {
+  display: flex;
+  gap: 6px;
+}
+
+input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+button {
+  padding: 10px 12px;
+  font: inherit;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.listening {
+  background: #444;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.toggle {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+footer {
+  font-size: 0.75rem;
+  color: var(--muted);
+}

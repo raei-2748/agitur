@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agitur</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Agitur</h1>
+      <p>Academic Portfolio</p>
+    </header>
+
+    <div id="log" aria-live="polite"></div>
+
+    <form id="form" autocomplete="off">
+      <button type="button" id="mic" aria-label="Speak your question">Talk</button>
+      <input id="input" type="text" placeholder="Ask something" maxlength="500" aria-label="Message">
+      <button type="submit">Send</button>
+    </form>
+
+    <label class="toggle">
+      <input type="checkbox" id="speak"> Read replies aloud
+    </label>
+
+    <footer>
+      Unofficial student project. Not endorsed by Knox Grammar School. Messages are processed by Google's Gemini API, so don't share personal details.
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
