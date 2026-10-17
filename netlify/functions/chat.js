@@ -4,7 +4,7 @@
 
 const { SYSTEM_PROMPT } = require("./context");
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const MAX_MESSAGE_CHARS = 500;
 const MAX_HISTORY_TURNS = 12;
 const MAX_REPLY_TOKENS = 300;
