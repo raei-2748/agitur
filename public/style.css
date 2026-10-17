@@ -16,8 +16,11 @@
   --surface: #FFFFFF;
   --hairline: rgba(20, 35, 75, 0.14);
   --lift: 0 2px 0 rgba(20, 35, 75, 0.08), 0 14px 34px -14px rgba(20, 35, 75, 0.3);
-  --display: "Bricolage Grotesque", system-ui, sans-serif;
-  --text: "Atkinson Hyperlegible", system-ui, sans-serif;
+  /* Two voices: Bricolage for everything you touch, Newsreader for Agitur speaking. */
+  --ui: "Bricolage Grotesque", system-ui, sans-serif;
+  --voice: "Newsreader", Georgia, "Times New Roman", serif;
+  --display: var(--ui);
+  --text: var(--ui);
   --hand: "Caveat", "Segoe Print", cursive;
 }
 
@@ -45,8 +48,9 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
-  font-family: var(--text);
+  font-family: var(--ui);
   font-size: 16px;
+  font-optical-sizing: auto;
   color: var(--ink);
   background: var(--sky-bottom);
   -webkit-font-smoothing: antialiased;
@@ -115,7 +119,10 @@ header {
 
 .forecast {
   margin: 10px 0 0;
+  font-family: var(--voice);
   font-style: italic;
+  font-size: 1.12rem;
+  line-height: 1.35;
   color: var(--ink-soft);
 }
 
@@ -136,7 +143,7 @@ body.chatting header {
 }
 
 body.chatting .title h1 { font-size: 1.7rem; letter-spacing: -0.025em; }
-body.chatting .forecast { margin-top: 3px; font-size: 0.85rem; }
+body.chatting .forecast { margin-top: 2px; font-size: 0.92rem; }
 body.chatting .actions { margin-top: 0; gap: 8px; }
 
 /* The cloud */
@@ -199,7 +206,7 @@ body[data-state="speaking"] .mouth { animation: talk 0.28s ease-in-out infinite 
   padding: 8px 14px 8px 12px;
   font: inherit;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ink);
   background: var(--surface);
   border: 2px solid var(--ink);
@@ -264,9 +271,11 @@ body[data-state="speaking"] .mouth { animation: talk 0.28s ease-in-out infinite 
 }
 
 .intro p {
-  margin: 0 0 20px;
-  color: var(--ink-soft);
-  line-height: 1.6;
+  margin: 0 0 22px;
+  font-family: var(--voice);
+  font-size: 1.14rem;
+  line-height: 1.55;
+  color: var(--ink);
 }
 
 .chips {
@@ -279,6 +288,7 @@ body[data-state="speaking"] .mouth { animation: talk 0.28s ease-in-out infinite 
 .chip {
   font: inherit;
   font-size: 0.92rem;
+  font-weight: 500;
   color: var(--ink);
   background: var(--surface);
   border: 1.5px solid var(--hairline);
@@ -301,7 +311,7 @@ body.chatting .intro { display: none; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
   padding: 4px 2px 8px;
 }
 
@@ -309,13 +319,17 @@ body:not(.chatting) #log { visibility: hidden; }
 
 #log .you {
   align-self: flex-end;
-  max-width: 78%;
-  margin: 0;
-  padding: 10px 16px;
-  line-height: 1.5;
-  color: var(--cobalt-ink);
-  background: var(--cobalt);
-  border-radius: 20px 20px 6px 20px;
+  max-width: 76%;
+  margin: 4px 4px 4px 0;
+  padding: 9px 15px 10px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--sun);
   overflow-wrap: anywhere;
 }
 
@@ -330,7 +344,7 @@ body:not(.chatting) #log { visibility: hidden; }
 #log .bot .mini {
   width: 30px;
   height: 23px;
-  margin-top: 2px;
+  margin-top: 4px;
   fill: var(--cloud);
   stroke: var(--ink);
   stroke-width: 10;
@@ -340,8 +354,11 @@ body:not(.chatting) #log { visibility: hidden; }
 
 #log .bot p {
   margin: 0;
-  font-size: 1.04rem;
-  line-height: 1.6;
+  max-width: 60ch;
+  font-family: var(--voice);
+  font-size: 1.16rem;
+  line-height: 1.55;
+  letter-spacing: 0.002em;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -500,8 +517,8 @@ dialog[open] { animation: deliver 0.35s cubic-bezier(.2, .9, .3, 1.2); }
   width: 100%;
   min-height: 170px;
   padding: 2px 2px;
-  font: inherit;
-  font-size: 1rem;
+  font-family: var(--voice);
+  font-size: 1.12rem;
   line-height: 32px;
   color: #14234B;
   background: repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px);
@@ -549,7 +566,7 @@ dialog[open] { animation: deliver 0.35s cubic-bezier(.2, .9, .3, 1.2); }
 .btn {
   padding: 10px 18px;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 999px;
   cursor: pointer;
   transition: transform 0.1s, filter 0.15s;
@@ -564,6 +581,8 @@ dialog[open] { animation: deliver 0.35s cubic-bezier(.2, .9, .3, 1.2); }
 
 .posted p {
   margin: 0;
+  font-family: var(--voice);
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #33416A;
   max-width: 40ch;
