@@ -336,7 +336,7 @@ body:not(.chatting) #log { visibility: hidden; }
 #log .bot {
   display: grid;
   grid-template-columns: 30px 1fr;
-  gap: 10px;
+  gap: 8px;
   align-items: start;
   max-width: 92%;
 }
@@ -353,7 +353,13 @@ body:not(.chatting) #log { visibility: hidden; }
 }
 
 #log .bot p {
+  justify-self: start;
   margin: 0;
+  padding: 12px 18px 13px;
+  background: var(--surface);
+  border: 1.5px solid var(--hairline);
+  border-radius: 4px 18px 18px 18px;
+  box-shadow: 0 1px 0 rgba(20, 35, 75, 0.04), 0 10px 24px -16px rgba(20, 35, 75, 0.35);
   max-width: 60ch;
   font-family: var(--voice);
   font-size: 1.16rem;
@@ -363,7 +369,20 @@ body:not(.chatting) #log { visibility: hidden; }
   overflow-wrap: anywhere;
 }
 
-#log .bot.pending p { color: var(--ink-soft); font-style: italic; }
+#log .bot.pending p { color: var(--ink-soft); font-style: italic; background: transparent; border-color: transparent; box-shadow: none; padding-left: 0; }
+
+/* Once the chat starts, calm the sky so the text has a quieter backdrop */
+.sky { transition: opacity 0.6s; }
+.sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--sky-bottom);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+body.chatting .sky::after { opacity: 0.55; }
+.sky .horizon { z-index: 1; }
 
 #log .new { animation: arrive 0.3s cubic-bezier(.2, .8, .2, 1); }
 
