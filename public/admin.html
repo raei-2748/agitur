@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex">
+  <title>Agitur mailroom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .room { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+    .room h1 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 2.4rem; letter-spacing: -0.03em; }
+    .room > p { margin: 6px 0 28px; color: var(--ink-soft); line-height: 1.55; max-width: 60ch; }
+    .room h2 { margin: 36px 0 12px; font-family: var(--display); font-size: 1.3rem; }
+    .room h2 .n { color: var(--ink-soft); font-weight: 600; }
+    .login { display: flex; gap: 8px; max-width: 420px; }
+    .field {
+      flex: 1; min-width: 0; padding: 11px 14px; font: inherit; color: var(--ink);
+      background: var(--surface); border: 2px solid var(--ink); border-radius: 10px;
+    }
+    .field:focus { outline: none; border-color: var(--cobalt); }
+    .card {
+      margin-bottom: 12px; padding: 14px; background: var(--surface);
+      border: 1.5px solid var(--hairline); border-radius: 12px;
+    }
+    .card.waiting { border-left: 6px solid var(--sun); }
+    .card textarea {
+      display: block; width: 100%; min-height: 84px; padding: 8px 10px; font: inherit; line-height: 1.5;
+      color: var(--ink); background: transparent; border: 1.5px solid var(--hairline); border-radius: 8px; resize: vertical;
+    }
+    .card textarea:focus { outline: none; border-color: var(--cobalt); }
+    .meta { margin: 8px 0 0; font-size: 0.8rem; color: var(--ink-soft); }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+    .row .meta { margin: 0 auto 0 0; align-self: center; }
+    .room .btn.ghost { color: var(--ink); border-color: var(--hairline); }
+    .room .btn.danger { color: #B4232F; background: transparent; border: 2px solid currentColor; }
+    .empty { margin: 0; padding: 14px; color: var(--ink-soft); border: 1.5px dashed var(--hairline); border-radius: 12px; }
+    .msg { min-height: 1.4em; margin: 12px 0 0; font-weight: 700; }
+    .msg.bad { color: #B4232F; }
+    .msg.good { color: var(--cobalt); }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <div class="room">
+    <div class="top">
+      <h1>Agitur mailroom</h1>
+      <button type="button" class="btn ghost" id="logout" hidden>Lock</button>
+    </div>
+    <p>Read letters before Agitur does. Approve the ones that are true and useful, edit out anything personal, and bin the rest. Only approved notes reach Agitur, usually within a minute.</p>
+
+    <form class="login" id="login">
+      <label class="sr-only" for="pw">Admin password</label>
+      <input class="field" id="pw" type="password" placeholder="Admin password" autocomplete="current-password">
+      <button class="btn solid" type="submit">Open</button>
+    </form>
+
+    <div id="room" hidden>
+      <h2>Waiting for review <span class="n" id="pending-n"></span></h2>
+      <div id="pending"></div>
+
+      <h2>What Agitur knows <span class="n" id="approved-n"></span></h2>
+      <div id="approved"></div>
+
+      <h2>Add a note yourself</h2>
+      <div class="card">
+        <label class="sr-only" for="new-note">New note</label>
+        <textarea id="new-note" maxlength="1000" placeholder="For example: Academic Portfolio members are Ray (Secretary), ... Only list people who are happy to be named."></textarea>
+        <div class="row"><button type="button" class="btn solid" id="add">Add note</button></div>
+      </div>
+    </div>
+
+    <p class="msg" id="msg" role="status"></p>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,32 +1,42 @@
-/* Agitur: a sleepy cloud on a soft sky. Navy ink, cobalt accent. */
+/* Agitur: a sleepy cloud on a soft sky, with an airmail post box.
+   Navy ink, cobalt accent, a little sunshine yellow for the post. */
 
 :root {
-  --sky-top: #C9D6F5;
-  --sky-bottom: #F1F4FC;
+  --sky-top: #BFCFF3;
+  --sky-bottom: #EEF2FC;
+  --horizon: #FFFFFF;
   --ink: #14234B;
   --ink-soft: #4A5A82;
   --cloud: #FFFFFF;
   --cobalt: #2F5BEA;
   --cobalt-ink: #FFFFFF;
-  --bubble: #FFFFFF;
-  --hairline: rgba(20, 35, 75, 0.12);
-  --rain: #2F5BEA;
-  --lift: 0 2px 0 rgba(20, 35, 75, 0.08), 0 12px 32px -12px rgba(20, 35, 75, 0.25);
+  --sun: #F5B83D;
+  --paper: #FFFDF8;
+  --rule: rgba(47, 91, 234, 0.14);
+  --surface: #FFFFFF;
+  --hairline: rgba(20, 35, 75, 0.14);
+  --lift: 0 2px 0 rgba(20, 35, 75, 0.08), 0 14px 34px -14px rgba(20, 35, 75, 0.3);
+  --display: "Bricolage Grotesque", system-ui, sans-serif;
+  --text: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --hand: "Caveat", "Segoe Print", cursive;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --sky-top: #0F1733;
-    --sky-bottom: #1D2852;
+    --sky-top: #0C1330;
+    --sky-bottom: #1B2650;
+    --horizon: #233063;
     --ink: #E8ECFA;
     --ink-soft: #A3AED0;
     --cloud: #2C3868;
     --cobalt: #7C9BFF;
     --cobalt-ink: #0F1733;
-    --bubble: #26315C;
-    --hairline: rgba(232, 236, 250, 0.14);
-    --rain: #7C9BFF;
-    --lift: 0 2px 0 rgba(0, 0, 0, 0.25), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+    --sun: #F2C25B;
+    --paper: #F4F1E8;
+    --rule: rgba(47, 91, 234, 0.16);
+    --surface: #26315C;
+    --hairline: rgba(232, 236, 250, 0.16);
+    --lift: 0 2px 0 rgba(0, 0, 0, 0.25), 0 14px 34px -14px rgba(0, 0, 0, 0.65);
   }
 }
 
@@ -35,22 +45,43 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
-  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  font-family: var(--text);
   font-size: 16px;
   color: var(--ink);
   background: var(--sky-bottom);
   -webkit-font-smoothing: antialiased;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Sky and a bank of cloud along the bottom edge */
+
 .sky {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 70%);
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 62%);
+  overflow: hidden;
+}
+
+.horizon {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  color: var(--horizon);
+  opacity: 0.9;
 }
 
 main {
-  max-width: 600px;
+  max-width: 620px;
   height: 100vh;
   height: 100dvh;
   margin: 0 auto;
@@ -60,36 +91,39 @@ main {
   gap: 16px;
 }
 
-/* Header: large and centred before the chat starts, compact once it does */
+/* Header: tall and centred on the opening screen, a compact bar once chatting */
 
 header {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
   text-align: center;
-  gap: 6px;
-  padding-top: 8vh;
+  gap: 4px;
+  padding-top: 6vh;
   transition: padding 0.5s cubic-bezier(.2, .8, .2, 1);
 }
 
 .title h1 {
   margin: 0;
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(3rem, 12vw, 4.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-size: clamp(3.2rem, 13vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
   transition: font-size 0.5s cubic-bezier(.2, .8, .2, 1);
 }
 
-.sub {
-  margin: 6px 0 0;
+.forecast {
+  margin: 10px 0 0;
+  font-style: italic;
   color: var(--ink-soft);
-  font-size: 1rem;
 }
 
-.switch {
-  margin-top: 10px;
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
 }
 
 body.chatting header {
@@ -101,15 +135,15 @@ body.chatting header {
   padding-top: 0;
 }
 
-body.chatting .title h1 { font-size: 1.6rem; letter-spacing: -0.02em; }
-body.chatting .sub { margin-top: 2px; font-size: 0.85rem; }
-body.chatting .switch { margin-top: 0; }
+body.chatting .title h1 { font-size: 1.7rem; letter-spacing: -0.025em; }
+body.chatting .forecast { margin-top: 3px; font-size: 0.85rem; }
+body.chatting .actions { margin-top: 0; gap: 8px; }
 
 /* The cloud */
 
 .cloud {
-  width: 200px;
-  height: 150px;
+  width: 196px;
+  height: 147px;
   overflow: visible;
   transition: width 0.5s cubic-bezier(.2, .8, .2, 1), height 0.5s cubic-bezier(.2, .8, .2, 1);
 }
@@ -124,73 +158,115 @@ body.chatting .cloud { width: 60px; height: 45px; }
 }
 
 .eye circle { fill: var(--ink); }
-.lid { fill: var(--cloud); transform-box: fill-box; transform-origin: top; transition: transform 0.25s; }
+.lid { fill: var(--cloud); transform-box: fill-box; transform-origin: top; transform: scaleY(0.55); transition: transform 0.25s; }
 .mouth { fill: var(--ink); transform-box: fill-box; transform-origin: center; }
-
+.eye { animation: blink 5.5s infinite; transform-box: fill-box; transform-origin: center; }
 .body { animation: float 6s ease-in-out infinite; transform-origin: 105px 90px; }
 
-/* Half-closed lids by default: the deadpan look. A slow blink every few seconds. */
-.lid { transform: scaleY(0.55); }
-.eye { animation: blink 5.5s infinite; transform-box: fill-box; transform-origin: center; }
-
 .rain line {
-  stroke: var(--rain);
+  stroke: var(--cobalt);
   stroke-width: 3.5;
   stroke-linecap: round;
   opacity: 0;
 }
 
-/* Listening: eyes open, slight lean in */
 body[data-state="listening"] .lid { transform: scaleY(0); }
 body[data-state="listening"] .body { animation: lean 1.4s ease-in-out infinite; }
 
-/* Thinking: drizzle */
 body[data-state="thinking"] .rain line { animation: drop 0.9s linear infinite; }
 body[data-state="thinking"] .rain line:nth-child(2) { animation-delay: 0.3s; }
 body[data-state="thinking"] .rain line:nth-child(3) { animation-delay: 0.6s; }
 body[data-state="thinking"] .lid { transform: scaleY(0.8); }
 
-/* Speaking: mouth moves */
 body[data-state="speaking"] .mouth { animation: talk 0.28s ease-in-out infinite alternate; }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-@keyframes lean {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-@keyframes blink {
-  0%, 94%, 100% { transform: scaleY(1); }
-  96% { transform: scaleY(0.1); }
-}
-
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes lean { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
 @keyframes drop {
   0% { opacity: 0; transform: translateY(-6px); }
   30% { opacity: 1; }
   100% { opacity: 0; transform: translateY(10px); }
 }
+@keyframes talk { from { transform: scaleY(1); } to { transform: scale(0.8, 4); } }
 
-@keyframes talk {
-  from { transform: scaleY(1); }
-  to { transform: scale(0.8, 4); }
+/* Buttons in the header */
+
+.letter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--sun);
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
-/* Intro and starter questions */
+.letter-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--sun); }
+.letter-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--sun); }
+
+@media (max-width: 480px) {
+  body.chatting .letter-btn span { display: none; }
+  body.chatting .letter-btn { padding: 8px; }
+  body.chatting .forecast { display: none; }
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch input { position: absolute; opacity: 0; pointer-events: none; }
+
+.track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--hairline);
+  transition: background 0.2s;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--cloud);
+  border: 1.5px solid var(--ink);
+  transition: transform 0.2s;
+}
+
+.switch input:checked + .track { background: var(--cobalt); }
+.switch input:checked + .track .thumb { transform: translateX(16px); }
+.switch input:focus-visible + .track { outline: 3px solid var(--cobalt); outline-offset: 2px; }
+
+/* Opening screen */
 
 .intro {
   text-align: center;
-  max-width: 44ch;
+  max-width: 46ch;
   margin: 0 auto;
 }
 
 .intro p {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   color: var(--ink-soft);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .chips {
@@ -202,12 +278,12 @@ body[data-state="speaking"] .mouth { animation: talk 0.28s ease-in-out infinite 
 
 .chip {
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--ink);
-  background: var(--bubble);
+  background: var(--surface);
   border: 1.5px solid var(--hairline);
   border-radius: 999px;
-  padding: 9px 14px;
+  padding: 9px 15px;
   cursor: pointer;
   transition: border-color 0.15s, transform 0.1s;
 }
@@ -225,59 +301,71 @@ body.chatting .intro { display: none; }
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   padding: 4px 2px 8px;
 }
 
-body:not(.chatting) #log { flex: 1; visibility: hidden; }
+body:not(.chatting) #log { visibility: hidden; }
 
-#log p {
+#log .you {
+  align-self: flex-end;
+  max-width: 78%;
   margin: 0;
-  max-width: 80%;
-  padding: 11px 15px;
+  padding: 10px 16px;
   line-height: 1.5;
-  border-radius: 20px;
+  color: var(--cobalt-ink);
+  background: var(--cobalt);
+  border-radius: 20px 20px 6px 20px;
+  overflow-wrap: anywhere;
+}
+
+#log .bot {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  align-items: start;
+  max-width: 92%;
+}
+
+#log .bot .mini {
+  width: 30px;
+  height: 23px;
+  margin-top: 2px;
+  fill: var(--cloud);
+  stroke: var(--ink);
+  stroke-width: 10;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+#log .bot p {
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.6;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-#log .you {
-  align-self: flex-end;
-  background: var(--cobalt);
-  color: var(--cobalt-ink);
-  border-bottom-right-radius: 6px;
-}
-
-#log .bot {
-  align-self: flex-start;
-  background: var(--bubble);
-  border: 1.5px solid var(--hairline);
-  border-bottom-left-radius: 6px;
-}
+#log .bot.pending p { color: var(--ink-soft); font-style: italic; }
 
 #log .new { animation: arrive 0.3s cubic-bezier(.2, .8, .2, 1); }
 
-#log .pending { color: var(--ink-soft); }
-
-@keyframes arrive {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
-}
+@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* Composer */
 
-form {
+#form {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 6px;
-  background: var(--bubble);
+  background: var(--surface);
   border: 2px solid var(--ink);
   border-radius: 999px;
   box-shadow: var(--lift);
 }
 
-form:focus-within { border-color: var(--cobalt); }
+#form:focus-within { border-color: var(--cobalt); }
 
 #input {
   flex: 1;
@@ -308,56 +396,13 @@ form:focus-within { border-color: var(--cobalt); }
 
 .icon-btn:hover { background: var(--hairline); color: var(--ink); }
 .icon-btn:active { transform: scale(0.92); }
-
 .icon-btn.send { background: var(--cobalt); color: var(--cobalt-ink); }
 .icon-btn.send:hover { background: var(--cobalt); filter: brightness(1.08); }
-
 #mic.listening { background: var(--cobalt); color: var(--cobalt-ink); }
-
 .icon-btn:disabled { opacity: 0.35; cursor: default; }
 
 :focus-visible { outline: 3px solid var(--cobalt); outline-offset: 2px; }
 #input:focus-visible { outline: none; }
-
-/* Voice switch */
-
-.switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  color: var(--ink-soft);
-  cursor: pointer;
-  user-select: none;
-}
-
-.switch input { position: absolute; opacity: 0; pointer-events: none; }
-
-.track {
-  position: relative;
-  width: 38px;
-  height: 22px;
-  border-radius: 999px;
-  background: var(--hairline);
-  border: 1.5px solid var(--hairline);
-  transition: background 0.2s;
-}
-
-.thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: var(--cloud);
-  border: 1.5px solid var(--ink);
-  transition: transform 0.2s;
-}
-
-.switch input:checked + .track { background: var(--cobalt); }
-.switch input:checked + .track .thumb { transform: translateX(16px); }
-.switch input:focus-visible + .track { outline: 3px solid var(--cobalt); outline-offset: 2px; }
 
 footer {
   font-size: 0.75rem;
@@ -367,9 +412,178 @@ footer {
   padding: 0 12px;
 }
 
-@media (max-width: 420px) {
-  body.chatting .sub { display: none; }
-  #log p { max-width: 88%; }
+/* Letter to Agitur: an airmail envelope */
+
+dialog {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #14234B;
+  overflow: visible;
+}
+
+dialog::backdrop {
+  background: rgba(12, 19, 48, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+dialog[open] { animation: deliver 0.35s cubic-bezier(.2, .9, .3, 1.2); }
+
+@keyframes deliver {
+  from { opacity: 0; transform: translateY(24px) rotate(-2deg); }
+  to { opacity: 1; transform: none; }
+}
+
+.envelope {
+  position: relative;
+  padding: 12px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(-45deg,
+      #2F5BEA 0 16px, var(--paper) 16px 24px,
+      #F5B83D 24px 40px, var(--paper) 40px 48px);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45);
+}
+
+.letter-body {
+  position: relative;
+  padding: 26px 24px 20px;
+  background: var(--paper);
+  border-radius: 4px;
+}
+
+.stamp {
+  position: absolute;
+  z-index: 1;
+  top: 26px;
+  right: 26px;
+  width: 74px;
+  padding: 8px 6px 6px;
+  text-align: center;
+  background: #DCE6FB;
+  border: 2px dashed #2F5BEA;
+  transform: rotate(4deg);
+}
+
+.stamp svg {
+  width: 48px;
+  height: 36px;
+  fill: #fff;
+  stroke: #14234B;
+  stroke-width: 9;
+  stroke-linejoin: round;
+  overflow: visible;
+}
+
+.stamp span {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #2F5BEA;
+}
+
+.salutation {
+  min-height: 76px;
+  margin: 0 90px 12px 0;
+  font-family: var(--hand);
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: #14234B;
+}
+
+#letter-text {
+  display: block;
+  width: 100%;
+  min-height: 170px;
+  padding: 2px 2px;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 32px;
+  color: #14234B;
+  background: repeating-linear-gradient(180deg, transparent 0 31px, var(--rule) 31px 32px);
+  background-attachment: local;
+  border: 0;
+  resize: vertical;
+  outline: none;
+}
+
+#letter-text::placeholder { color: #7682A3; }
+
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.letter-note {
+  margin: 12px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #4A5A82;
+}
+
+.letter-error {
+  margin: 8px 0 0;
+  min-height: 1.2em;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #B4232F;
+}
+
+.letter-error:empty { min-height: 0; margin: 0; }
+
+.letter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.count {
+  margin-right: auto;
+  font-size: 0.8rem;
+  color: #7682A3;
+}
+
+.btn {
+  padding: 10px 18px;
+  font: inherit;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s;
+}
+
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.55; cursor: default; }
+.btn.ghost { color: #14234B; background: transparent; border: 2px solid transparent; }
+.btn.ghost:hover { border-color: rgba(20, 35, 75, 0.2); }
+.btn.solid { color: #fff; background: #2F5BEA; border: 2px solid #14234B; }
+.btn.solid:hover { filter: brightness(1.08); }
+
+.posted p {
+  margin: 0;
+  line-height: 1.6;
+  color: #33416A;
+  max-width: 40ch;
+}
+
+.btn, .count { white-space: nowrap; }
+
+@media (max-width: 480px) {
+  .letter-body { padding: 22px 16px 16px; }
+  .stamp { top: 20px; right: 18px; width: 64px; }
+  .salutation { font-size: 2.1rem; margin-right: 76px; }
+  .btn { padding: 10px 14px; }
+}
+
+/* Short screens: shrink the opening cloud so everything fits */
+@media (max-height: 820px) {
+  header { padding-top: 2vh; }
+  .cloud { width: 150px; height: 112px; }
+  .actions { margin-top: 12px; }
+  .intro p { margin-bottom: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

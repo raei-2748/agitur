@@ -4,16 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#E4EAF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#CFDAF5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0F1733" media="(prefers-color-scheme: dark)">
   <title>Agitur</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Caveat:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-state="idle">
-  <div class="sky" aria-hidden="true"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="puff" viewBox="0 0 200 150">
+      <path d="M50 120 A30 30 0 0 1 46 60.3 A40 40 0 0 1 120 42.3 A32 32 0 0 1 166 68.3 A28 28 0 0 1 160 120 Z"/>
+    </symbol>
+  </svg>
+
+  <div class="sky" aria-hidden="true">
+    <svg class="horizon" viewBox="0 0 1200 160" preserveAspectRatio="none">
+      <g fill="currentColor">
+        <circle cx="40" cy="150" r="70"/><circle cx="150" cy="130" r="80"/><circle cx="270" cy="155" r="65"/>
+        <circle cx="390" cy="135" r="85"/><circle cx="520" cy="150" r="70"/><circle cx="640" cy="128" r="90"/>
+        <circle cx="770" cy="152" r="68"/><circle cx="890" cy="132" r="84"/><circle cx="1010" cy="150" r="72"/>
+        <circle cx="1130" cy="135" r="86"/><rect x="0" y="140" width="1200" height="20"/>
+      </g>
+    </svg>
+  </div>
 
   <main>
     <header>
@@ -21,11 +36,11 @@
         <g class="body">
           <path class="puff" d="M50 120 A30 30 0 0 1 46 60.3 A40 40 0 0 1 120 42.3 A32 32 0 0 1 166 68.3 A28 28 0 0 1 160 120 Z"/>
           <g class="face">
-            <g class="eye eye-l">
+            <g class="eye">
               <circle cx="86" cy="90" r="6"/>
               <rect class="lid" x="78" y="80" width="16" height="10"/>
             </g>
-            <g class="eye eye-r">
+            <g class="eye">
               <circle cx="124" cy="90" r="6"/>
               <rect class="lid" x="116" y="80" width="16" height="10"/>
             </g>
@@ -41,18 +56,26 @@
 
       <div class="title">
         <h1>Agitur</h1>
-        <p class="sub">The Academic Portfolio's resident cloud</p>
+        <p class="forecast" id="forecast">Forecast: overcast, with a 90% chance of sarcasm.</p>
       </div>
 
-      <label class="switch">
-        <input type="checkbox" id="speak">
-        <span class="track"><span class="thumb"></span></span>
-        <span>Voice</span>
-      </label>
+      <div class="actions">
+        <button type="button" class="letter-btn" id="open-letter">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 6h18v12H3z M3 6l9 7 9-7"/>
+          </svg>
+          <span>Write a letter</span>
+        </button>
+        <label class="switch">
+          <input type="checkbox" id="speak">
+          <span class="track"><span class="thumb"></span></span>
+          <span>Voice</span>
+        </label>
+      </div>
     </header>
 
     <section class="intro" id="intro">
-      <p>Ask about study sessions, student voice, Mentor Leaders or Knox Forward. I'll answer, eventually, with a sigh.</p>
+      <p>I'm the Academic Portfolio's resident cloud. Ask about study sessions, student voice, Mentor Leaders or Knox Forward, and I'll answer with only a small sigh.</p>
       <div class="chips">
         <button type="button" class="chip">What does the Academic Portfolio do?</button>
         <button type="button" class="chip">How does student voice work?</button>
@@ -80,6 +103,38 @@
       Unofficial student project, not endorsed by Knox Grammar School. Messages go to Google's Gemini API, so keep personal details out of them.
     </footer>
   </main>
+
+  <dialog id="letter" aria-labelledby="letter-title">
+    <form id="letter-form" class="envelope" method="dialog">
+      <div class="stamp" aria-hidden="true">
+        <svg viewBox="0 0 200 150"><use href="#puff"/></svg>
+        <span>Agitur Post</span>
+      </div>
+
+      <div class="letter-body" id="letter-compose">
+        <h2 id="letter-title" class="salutation">Dear Agitur,</h2>
+        <label class="sr-only" for="letter-text">Your letter</label>
+        <textarea id="letter-text" maxlength="1000" rows="6" placeholder="Tell me something true about the Academic Portfolio. When study sessions run, where the notes live, who to ask about what."></textarea>
+        <input type="text" name="website" id="letter-website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="letter-note">The portfolio team reads every letter before I do. Leave out other students' personal details.</p>
+        <p class="letter-error" id="letter-error" role="alert"></p>
+        <div class="letter-actions">
+          <span class="count" id="letter-count">0 / 1000</span>
+          <button type="button" class="btn ghost" id="letter-cancel">Cancel</button>
+          <button type="button" class="btn solid" id="letter-send">Post letter</button>
+        </div>
+      </div>
+
+      <div class="letter-body posted" id="letter-posted" hidden>
+        <h2 class="salutation">Posted.</h2>
+        <p>Your letter is with the portfolio team. Once they've read it, I'll know what you told me.</p>
+        <div class="letter-actions">
+          <button type="button" class="btn solid" id="letter-done">Back to the chat</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
   <script src="app.js"></script>
 </body>
 </html>

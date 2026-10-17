@@ -1,0 +1,8 @@
+{
+  "name": "agitur",
+  "private": true,
+  "description": "Unofficial chatbot for the Knox Academic Portfolio",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.4"
+  }
+}

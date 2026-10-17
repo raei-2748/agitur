@@ -6,7 +6,15 @@ An unofficial, deadpan chatbot for the Knox Academic Portfolio. Text or voice, o
 
 - `public/`: the one-page chat UI (text input, voice input, optional spoken replies).
 - `netlify/functions/chat.js`: a serverless function that calls the Gemini API. The API key lives here, on the server, never in the browser.
-- `netlify/functions/context.js`: Agitur's personality and the Knox material it can use. Edit this to change behaviour or content.
+- `netlify/lib/context.js`: Agitur's personality and the Knox material it can use. Edit this to change behaviour or content.
+- `netlify/functions/letter.js` and `admin.js`: Letter to Agitur. Letters go into a review queue in Netlify Blobs; only approved ones reach Agitur.
+- `public/admin.html`: the mailroom, where an admin approves, edits or bins letters and adds notes directly.
+
+## Letter to Agitur
+
+Anyone can write a letter from the chat page. Letters wait in a queue until someone with the admin password approves them at `/admin.html`. Approved notes are added to Agitur's knowledge within about a minute. Admins can also add notes directly, such as the list of portfolio members (only people who are happy to be named).
+
+Set `ADMIN_PASSWORD` in Netlify's environment variables and redeploy before using the mailroom. Pick something long, and share it only with the people who review letters.
 
 ## Setup
 
