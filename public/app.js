@@ -3,20 +3,18 @@ const form = document.getElementById("form");
 const input = document.getElementById("input");
 const micBtn = document.getElementById("mic");
 const speakToggle = document.getElementById("speak");
-const statusEl = document.getElementById("status");
 
 // Conversation so far, sent back with each message so Agitur remembers the thread.
 const history = [];
 
 // The page's visual state drives the orb: idle, listening, thinking, speaking.
-function setState(state, label = "") {
+function setState(state) {
   document.body.dataset.state = state;
-  statusEl.textContent = label;
 }
 
 function addLine(who, text) {
   const p = document.createElement("p");
-  p.className = who;
+  p.className = `${who} new`;
   p.textContent = text;
   log.appendChild(p);
   log.scrollTop = log.scrollHeight;
@@ -74,6 +72,7 @@ async function send(text) {
   text = text.trim();
   if (!text) return;
 
+  document.body.classList.add("chatting");
   addLine("you", text);
   input.value = "";
   const pending = addLine("bot pending", "···");
@@ -138,4 +137,7 @@ if (SpeechRec) {
   micBtn.title = "Voice input isn't supported in this browser";
 }
 
-addLine("bot", "Oh good, you're here. Ask me about the Academic Portfolio. I'll try to look surprised.");
+// Starter questions on the opening screen.
+document.querySelectorAll(".chip").forEach((chip) => {
+  chip.addEventListener("click", () => send(chip.textContent));
+});
